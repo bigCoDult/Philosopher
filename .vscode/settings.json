@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"*.css": "tailwindcss",
+		"*html": "html",
+		"*.txt": "plaintext",
+		"philosopher.h": "c"
+	}
+}
