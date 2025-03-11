@@ -6,11 +6,48 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 22:39:31 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/02/04 00:31:16 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/02/22 22:32:12 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+void	ft_bzero(void *dest, size_t count)
+{
+	memset(dest, 0, count);
+}
+
+void	*ft_calloc(size_t num, size_t size)
+{
+	void	*ptr;
+
+	if (num != 0 && (num * size) / num != size)
+		return (NULL);
+	ptr = malloc(num * size);
+	if (ptr == NULL)
+		return (NULL);
+	ft_bzero(ptr, num * size);
+	return (ptr);
+}
+void	*ft_memmove(void *dest, const void *src, size_t count)
+{
+	unsigned char		*dest_tmp;
+	const unsigned char	*src_tmp;
+
+	dest_tmp = (unsigned char *)dest;
+	src_tmp = (const unsigned char *)src;
+	if (dest_tmp > src_tmp)
+	{
+		while (count--)
+			*(dest_tmp + count) = *(src_tmp + count);
+	}
+	else
+	{
+		while (count--)
+			*dest_tmp++ = *src_tmp++;
+	}
+	return (dest);
+}
 
 int	ft_isspace(char c)
 {
@@ -115,3 +152,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
+void control_sleep(void)
+{
+	usleep(500);
+}

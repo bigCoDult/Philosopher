@@ -1,26 +1,26 @@
 # Important
-NAME = minishell
+NAME = philosopher
 CC = cc
 RM = rm -rf
 
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra -Werror -g -O0
 # 나중에는 디버깅 옵션 빼야함
+CFLAGS = -Wall -Wextra -Werror -g -O0
+# CFLAGS = -Wall -Wextra -Werror
 
 # Directory
 SRC_DIR = ./src
 OBJ_DIR = ./obj
-
-INC = -I/
+INC = -I.
 
 # src/obj file
-SRC = \
-	$(addprefix $(SRC_DIR)/, \
-	main.c \
-	ft_atoi.c \
-	validate.c \
-)
-
+# SRC = \
+# 	$(addprefix $(SRC_DIR)/, \
+# 	main.c \
+# 	ft_utils.c \
+# 	validate.c \
+# 	time.c \
+# )
+SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(OBJ_DIR) $(NAME)

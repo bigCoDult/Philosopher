@@ -16,7 +16,27 @@ typedef struct s_condition
 	int	eating_duration;
 	int	sleeping_duration;
 	int	musteat_deadline;
+	long long start_time;
 }	t_condition;
+
+typedef enum s_status
+{
+	EAT,
+	THINK,
+	SLEEP
+}	t_status;
+
+typedef struct s_philo
+{
+	int	head;
+	long long time_lasteat;
+	int alive;
+	pthread_t thread;
+	pthread_mutex_t	*fork;
+	t_condition *condition;
+	t_philo *next;
+	t_philo *prev;
+}	t_philo;
 
 typedef struct s_min_info
 {
@@ -26,11 +46,12 @@ typedef struct s_min_info
 	int		n2;
 }	t_min_info;
 
-int	ft_isspace(char c);
+int validate_argv(int argc,char **argv);
+void	*ft_calloc(size_t num, size_t size);
 int	ft_atoi(char *str);
-char	*ft_itoa(int n);
-int	ft_strcmp(const char *s1, const char *s2);
-int validate_argv(char **argv, int argc);
+void	init_condition(t_condition *condition, char **argv, int argc);
+long long convert_timeval_msec(struct timeval *timeval);
+
 
 
 
