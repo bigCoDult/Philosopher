@@ -1,6 +1,6 @@
 #include "philosopher.h"
 
-void	init_condition(t_condition *condition, char **argv, int argc)
+void	init_condition(t_condition *condition, int argc, char **argv)
 {
 	condition->philo_count = ft_atoi(argv[1]);
 	condition->starteat_die_deadline = ft_atoi(argv[2]);
@@ -11,31 +11,38 @@ void	init_condition(t_condition *condition, char **argv, int argc)
 	return ;
 }
 
-t_philo *init_philo(t_condition *condition)
+t_philo *init_philo(t_condition *condition, t_philo **philo)
 {
 	int i;
-	t_philo *philo;
+	int k;
 	long long start;
 	
 	i = 0;
+	k = 0;
 	start = get_now();
+	pthread_mutex_t *waiter;
+	waiter = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	pthread_mutex_init(waiter, NULL);
 	while (i < condition->philo_count)
 	{
-		philo[i].head = i;
-		philo[i].time_lasteat = start;
-		philo[i].alive = 1;
-		philo[i].condition = condition;
-		philo[i].fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
-		pthread_mutex_init(philo[i].fork, NULL);
-		if (i == 0)
-			philo[i].prev = &philo[condition->philo_count - 1];
-		else
-			philo[i].prev = &philo[i - 1];
+		while (k < condition->philo_count)
+			philo[k++] = (t_philo *)ft_calloc(1, sizeof(t_philo));
+		philo[i]->condition = condition;
+		philo[i]->waiter = waiter;
+		
+		philo[i]->head = i;
+		philo[i]->last_eat = start;
+		
+		philo[i]->fork_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+		philo[i]->status_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+		pthread_mutex_init(philo[i]->fork_mutex, NULL);
+		pthread_mutex_init(philo[i]->status_mutex, NULL);
+		
 		if (i == condition->philo_count - 1)
-			philo[i].next = &philo[0];
+			philo[i]->next = philo[0];
 		else
-			philo[i].next = &philo[i + 1];
+			philo[i]->next = philo[i + 1];
 		i++;
 	}
-	return (philo);
+	return (*philo);
 }

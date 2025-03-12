@@ -9,6 +9,23 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+typedef struct s_min_info
+{
+	int		minus_flag;
+	int		length;
+	int		n1;
+	int		n2;
+}	t_min_info;
+
+typedef struct s_study
+{
+	int		number;
+	pthread_mutex_t *mutex;
+	int time;
+}	t_study;
+
+
+
 typedef struct s_condition
 {
 	int	philo_count;
@@ -21,38 +38,45 @@ typedef struct s_condition
 
 typedef enum s_status
 {
-	EAT,
 	THINK,
-	SLEEP
+	EAT,
+	SLEEP,
+	DEAD
 }	t_status;
 
 typedef struct s_philo
 {
+	pthread_mutex_t	*waiter;
 	int	head;
-	long long time_lasteat;
-	int alive;
 	pthread_t thread;
-	pthread_mutex_t	*fork;
+	int action;
+	long long last_eat;
+	long long last_action;
+	int fork;
+	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	*status_mutex;
+	int count_eat;
 	t_condition *condition;
-	t_philo *next;
-	t_philo *prev;
+	struct s_philo *next;
 }	t_philo;
 
-typedef struct s_min_info
-{
-	int		minus_flag;
-	int		length;
-	int		n1;
-	int		n2;
-}	t_min_info;
 
-int validate_argv(int argc,char **argv);
+
+int		ft_atoi(char *str);
+char	*ft_itoa(int n);
+int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_calloc(size_t num, size_t size);
-int	ft_atoi(char *str);
-void	init_condition(t_condition *condition, char **argv, int argc);
-long long convert_timeval_msec(struct timeval *timeval);
 
+int		validate_arg(int argc,char **argv);
 
+void	init_condition(t_condition *condition, int argc, char **argv);
+t_philo *init_philo(t_condition *condition, t_philo **philo);
+
+long long	get_now(void);
+void		clear_table(t_philo **philo);
+void table(t_philo *philo);
+
+void *life(void *arg);
 
 
 
