@@ -16,23 +16,44 @@ int main(int argc, char **argv)
 	return (0);
 }
 
-
 void table(t_philo *philo)
 {
 	t_philo *current;
 	current = philo;
+	pthread_t monitor;
 	int i;
+	
+	pthread_create(&monitor, NULL, &monitoring, (void *)philo);
 	i = 0;
 	while (i++ < philo->condition->philo_count)
 	{
 		pthread_create(&current->thread, NULL, &life, (void *)current);
+		// pthread_join(current->thread, NULL);
 		current = current->next;
 	}
-	i = 0;
-	while (i++ < philo->condition->philo_count)
+	pthread_join(monitor, NULL);
+}
+
+void *monitoring(void *arg)
+{
+	t_philo *philo;
+	philo = (t_philo *)arg;
+	while (1)
 	{
-		pthread_join(current->thread, (void *)current);
-		current = current->next;
+		pthread_mutex_lock(philo->status_mutex);
+		if (check_dead(get_interval(philo), philo->last_eat, philo->condition->starteat_die_deadline))
+		{
+			pthread_mutex_lock(philo->printer);
+			printf("%lld [%d] is DEAD\n", get_interval(philo), philo->head);
+			pthread_mutex_unlock(philo->printer);
+			philo->action = DEAD;
+			pthread_mutex_unlock(philo->status_mutex);
+			return (NULL);
+		}
+		else
+			pthread_mutex_unlock(philo->status_mutex);
+		philo = philo->next;
+		usleep(10);
 	}
 }
 

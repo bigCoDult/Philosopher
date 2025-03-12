@@ -77,11 +77,14 @@ t_philo *init_philo(t_condition *condition, t_philo **philo);
 long long get_now(void);
 long long get_interval(t_philo *philo);
 int check_dead(long long now, long long last_eat, long long deadline);
+void msleep(long long time);
 
 void		clear_table(t_philo **philo);
 void table(t_philo *philo);
 
 void *life(void *arg);
+void *monitoring(void *arg);
+
 
 
 

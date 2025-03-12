@@ -15,9 +15,6 @@ long long get_interval(t_philo *philo)
 	long long now;
 
 	now = get_now();
-	// printf("start_time : %lld\n", philo->condition->start_time);
-	// printf("now : %lld\n", now);
-	// exit(0);
 	return (now - philo->condition->start_time);
 }
 
@@ -29,4 +26,9 @@ int check_dead(long long now, long long last_eat, long long deadline)
 	if (deadline < starving)
 		return (1);
 	return (0);
+}
+
+void msleep(long long time)
+{
+	usleep(time * 1000);
 }
