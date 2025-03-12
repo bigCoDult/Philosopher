@@ -32,3 +32,9 @@ void msleep(long long time)
 {
 	usleep(time * 1000);
 }
+
+void controlled_sleep(void)
+{
+	// usleep(3500);
+	usleep(100);
+}

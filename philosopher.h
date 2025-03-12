@@ -78,6 +78,7 @@ long long get_now(void);
 long long get_interval(t_philo *philo);
 int check_dead(long long now, long long last_eat, long long deadline);
 void msleep(long long time);
+void controlled_sleep(void);
 
 void		clear_table(t_philo **philo);
 void table(t_philo *philo);

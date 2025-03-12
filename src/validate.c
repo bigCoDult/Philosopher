@@ -26,7 +26,7 @@ int validate_arg(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 	{
 		printf("Error: Wrong number of arguments\n");
-		return (1);
+		return (0);
 	}
 	if ( (cmp_atoitoa(argv[1]) != 0) || (cmp_atoitoa(argv[2]) != 0) \
 		|| (cmp_atoitoa(argv[3]) != 0) || (cmp_atoitoa(argv[4]) != 0) )

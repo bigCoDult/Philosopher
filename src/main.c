@@ -63,6 +63,7 @@ void clear_table(t_philo **philo)
 	int end;
 	i = 0;
 	end = philo[i]->condition->philo_count;
+	// pthread_mutex_unlock(philo[i]->printer);
 	pthread_mutex_destroy(philo[i]->waiter);
 	pthread_mutex_destroy(philo[i]->printer);
 	free(philo[i]->condition);

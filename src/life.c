@@ -3,6 +3,7 @@
 
 static int eating(t_philo *philo)
 {
+	controlled_sleep();
 	pthread_mutex_lock(philo->status_mutex);
 	if (philo->action == DEAD)
 	{
@@ -13,6 +14,8 @@ static int eating(t_philo *philo)
 
 	if (philo->condition->philo_count == 1)
 		return (0);
+	
+	
 	
 	pthread_mutex_lock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->fork_mutex);
@@ -55,6 +58,7 @@ static int eating(t_philo *philo)
 
 static int sleeping(t_philo *philo)
 {
+	controlled_sleep();
 	pthread_mutex_lock(philo->status_mutex);
 	if (philo->action == DEAD)
 	{
@@ -78,6 +82,7 @@ static int sleeping(t_philo *philo)
 
 static int thinking(t_philo *philo)
 {
+	controlled_sleep();
 	pthread_mutex_lock(philo->status_mutex);
 	if (philo->action == DEAD)
 	{
