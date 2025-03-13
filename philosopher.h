@@ -78,6 +78,9 @@ t_philo *init_philo(t_restaurant *restaurant, t_philo **philo);
 long long get_now(void);
 long long get_interval(t_philo *philo);
 int check_dead(long long now, long long last_eat, long long deadline);
+int is_closed(t_restaurant *restaurant);
+
+
 void msleep(long long time);
 void controlled_sleep(void);
 

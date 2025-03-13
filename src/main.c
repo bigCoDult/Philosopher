@@ -70,6 +70,7 @@ void clear_table(t_philo **philo)
 	int end;
 	i = 0;
 	end = philo[i]->restaurant->customer_count;
+	// pthread_mutex_unlock(philo[i]->printer);
 	pthread_mutex_destroy(philo[i]->waiter);
 	pthread_mutex_destroy(philo[i]->printer);
 	pthread_mutex_destroy(philo[i]->restaurant->restaurant_mutex);
@@ -90,3 +91,14 @@ void clear_table(t_philo **philo)
 }
 
 
+int is_closed(t_restaurant *restaurant)
+{
+	pthread_mutex_lock(restaurant->restaurant_mutex);
+	if (restaurant->restaurant_closed)
+	{
+		pthread_mutex_unlock(restaurant->restaurant_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(restaurant->restaurant_mutex);
+	return (0);
+}

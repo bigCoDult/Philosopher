@@ -1,41 +1,34 @@
 #include "philosopher.h"
 
-
-static int eating(t_philo *philo)
+static void call_waiter(t_philo *philo)
 {
-	controlled_sleep();
-	
-	
-	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
-	if (philo->restaurant->restaurant_closed)
-	{
-		pthread_mutex_unlock(philo->status_mutex);
-		return (0);
-	}
-	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
-	
-	if (philo->restaurant->customer_count == 1)
-	return (0);
 	pthread_mutex_lock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->fork_mutex);
 	pthread_mutex_lock(philo->next->fork_mutex);
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-	if (philo->head < philo->next->head)
-	{
-		pthread_mutex_lock(philo->fork_mutex);
-		pthread_mutex_lock(philo->next->fork_mutex);
-	} else
-	{
-		pthread_mutex_lock(philo->next->fork_mutex);
-		pthread_mutex_lock(philo->fork_mutex);
-	}
+		if (philo->head == philo->restaurant->customer_count - 1)
+		{
+			pthread_mutex_lock(philo->next->fork_mutex);
+			pthread_mutex_lock(philo->fork_mutex);
+		}
+		else
+		{
+			pthread_mutex_lock(philo->fork_mutex);
+			pthread_mutex_lock(philo->next->fork_mutex);
+		}
 	pthread_mutex_unlock(philo->waiter);
-	
-	
-	
-	
+}
+
+static int eating(t_philo *philo)
+{
+	controlled_sleep();
+	if (is_closed(philo->restaurant))
+		return (0);
+
+	call_waiter(philo);
+
 	pthread_mutex_lock(philo->status_mutex);
 	philo->fork = philo->head;
 	philo->next->fork = philo->head;
