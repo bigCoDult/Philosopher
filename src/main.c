@@ -49,7 +49,7 @@ void *monitoring(void *arg)
 		if (check_dead(get_interval(philo), philo->last_eat, philo->restaurant->starve_deadline))
 		{
 			pthread_mutex_lock(philo->printer);
-			printf("%lld [%d] is [DEAD]\n", get_interval(philo), philo->head);
+			printf("%lld [%d] is ------------------- DEAD -------------------\n", get_interval(philo), philo->head);
 			pthread_mutex_unlock(philo->printer);
 			philo->restaurant->restaurant_closed = 1;
 			pthread_mutex_unlock(philo->status_mutex);

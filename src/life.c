@@ -27,6 +27,15 @@ static int eating(t_philo *philo)
 	philo->fork = philo->head;
 	philo->next->fork = philo->head;
 	
+	if (philo->restaurant->restaurant_closed)
+	{
+		pthread_mutex_unlock(philo->status_mutex);
+		pthread_mutex_unlock(philo->fork_mutex);
+		pthread_mutex_unlock(philo->next->fork_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(philo->status_mutex);
+	
 	pthread_mutex_lock(philo->printer);
 		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->head);
 		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->head);
@@ -47,6 +56,15 @@ static int eating(t_philo *philo)
 	
 	msleep(philo->restaurant->eating_duration);
 	
+	pthread_mutex_lock(philo->status_mutex);
+	if (philo->restaurant->restaurant_closed)
+	{
+		pthread_mutex_unlock(philo->status_mutex);
+		pthread_mutex_unlock(philo->fork_mutex);
+		pthread_mutex_unlock(philo->next->fork_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(philo->status_mutex);
 	philo->fork = 0;
 	philo->next->fork = 0;
 	pthread_mutex_unlock(philo->fork_mutex);
@@ -76,6 +94,13 @@ static int sleeping(t_philo *philo)
 	
 	pthread_mutex_unlock(philo->status_mutex);
 	msleep(philo->restaurant->sleeping_duration);
+	
+	if (philo->restaurant->restaurant_closed)
+	{
+		pthread_mutex_unlock(philo->status_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(philo->status_mutex);
 	return (1);
 }
 
