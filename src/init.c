@@ -2,7 +2,7 @@
 
 void	init_restaurant(t_restaurant *restaurant, int argc, char **argv)
 {
-	restaurant->customer_count = ft_atoi(argv[1]);
+	restaurant->customer_index = ft_atoi(argv[1]) - 1;
 	restaurant->starve_deadline = ft_atoi(argv[2]);
 	restaurant->eating_duration = ft_atoi(argv[3]);
 	restaurant->sleeping_duration = ft_atoi(argv[4]);
@@ -28,9 +28,9 @@ t_philo *init_philo(t_restaurant *restaurant, t_philo **philo)
 	printer = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 	pthread_mutex_init(waiter, NULL);
 	pthread_mutex_init(printer, NULL);
-	while (k < restaurant->customer_count)
+	while (k <= restaurant->customer_index)
 		philo[k++] = (t_philo *)ft_calloc(1, sizeof(t_philo));
-	while (i < restaurant->customer_count)
+	while (i <= restaurant->customer_index)
 	{
 		philo[i]->restaurant = restaurant;
 		philo[i]->waiter = waiter;
@@ -43,10 +43,10 @@ t_philo *init_philo(t_restaurant *restaurant, t_philo **philo)
 		pthread_mutex_init(philo[i]->fork_mutex, NULL);
 		pthread_mutex_init(philo[i]->status_mutex, NULL);
 		
-		if (i == restaurant->customer_count - 1)
-			philo[i]->next = philo[0];
-		else
+		if (i != restaurant->customer_index)
 			philo[i]->next = philo[i + 1];
+		else
+			philo[i]->next = philo[0];
 		i++;
 	}
 	return (*philo);

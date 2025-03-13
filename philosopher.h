@@ -28,7 +28,7 @@ typedef struct s_study
 
 typedef struct s_restaurant
 {
-	int	customer_count;
+	int	customer_index;
 	int	starve_deadline;
 	int	eating_duration;
 	int	sleeping_duration;

@@ -8,7 +8,7 @@ static void call_waiter(t_philo *philo)
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-	if (philo->index == philo->restaurant->customer_count - 1)
+	if (philo->index == philo->restaurant->customer_index)
 	{
 		pthread_mutex_lock(philo->next->fork_mutex);
 		pthread_mutex_lock(philo->fork_mutex);
@@ -18,6 +18,8 @@ static void call_waiter(t_philo *philo)
 		pthread_mutex_lock(philo->fork_mutex);
 		pthread_mutex_lock(philo->next->fork_mutex);
 	}
+	// pthread_mutex_lock(philo->fork_mutex);
+	// pthread_mutex_lock(philo->next->fork_mutex);
 	pthread_mutex_unlock(philo->waiter);
 }
 
