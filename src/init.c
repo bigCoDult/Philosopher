@@ -1,18 +1,19 @@
 #include "philosopher.h"
 
-void	init_condition(t_condition *condition, int argc, char **argv)
+void	init_restaurant(t_restaurant *restaurant, int argc, char **argv)
 {
-	condition->start_time = get_now();
-	condition->philo_count = ft_atoi(argv[1]);
-	condition->starteat_die_deadline = ft_atoi(argv[2]);
-	condition->eating_duration = ft_atoi(argv[3]);
-	condition->sleeping_duration = ft_atoi(argv[4]);
+	restaurant->customer_count = ft_atoi(argv[1]);
+	restaurant->starve_deadline = ft_atoi(argv[2]);
+	restaurant->eating_duration = ft_atoi(argv[3]);
+	restaurant->sleeping_duration = ft_atoi(argv[4]);
 	if (argc == 6)
-		condition->musteat_deadline = ft_atoi(argv[5]);
+		restaurant->eat_goal = ft_atoi(argv[5]);
+	restaurant->open_time = get_now();
+	restaurant->restaurant_closed = 0;
 	return ;
 }
 
-t_philo *init_philo(t_condition *condition, t_philo **philo)
+t_philo *init_philo(t_restaurant *restaurant, t_philo **philo)
 {
 	int i;
 	int k;
@@ -25,11 +26,11 @@ t_philo *init_philo(t_condition *condition, t_philo **philo)
 	printer = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 	pthread_mutex_init(waiter, NULL);
 	pthread_mutex_init(printer, NULL);
-	while (k < condition->philo_count)
+	while (k < restaurant->customer_count)
 		philo[k++] = (t_philo *)ft_calloc(1, sizeof(t_philo));
-	while (i < condition->philo_count)
+	while (i < restaurant->customer_count)
 	{
-		philo[i]->condition = condition;
+		philo[i]->restaurant = restaurant;
 		philo[i]->waiter = waiter;
 		philo[i]->printer = printer;
 		
@@ -40,7 +41,7 @@ t_philo *init_philo(t_condition *condition, t_philo **philo)
 		pthread_mutex_init(philo[i]->fork_mutex, NULL);
 		pthread_mutex_init(philo[i]->status_mutex, NULL);
 		
-		if (i == condition->philo_count - 1)
+		if (i == restaurant->customer_count - 1)
 			philo[i]->next = philo[0];
 		else
 			philo[i]->next = philo[i + 1];

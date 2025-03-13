@@ -15,7 +15,7 @@ long long get_interval(t_philo *philo)
 	long long now;
 
 	now = get_now();
-	return (now - philo->condition->start_time);
+	return (now - philo->restaurant->open_time);
 }
 
 int check_dead(long long now, long long last_eat, long long deadline)

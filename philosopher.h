@@ -26,27 +26,28 @@ typedef struct s_study
 
 
 
-typedef struct s_condition
+typedef struct s_restaurant
 {
-	int	philo_count;
-	int	starteat_die_deadline;
+	int	customer_count;
+	int	starve_deadline;
 	int	eating_duration;
 	int	sleeping_duration;
-	int	musteat_deadline;
-	long long start_time;
-}	t_condition;
+	int	eat_goal;
+	long long open_time;
+	int restaurant_closed;
+}	t_restaurant;
 
 typedef enum s_status
 {
-	BIRTH,
+	ENTER,
 	THINK,
 	EAT,
-	SLEEP,
-	DEAD
+	SLEEP
 }	t_status;
 
 typedef struct s_philo
 {
+	t_restaurant *restaurant;
 	pthread_mutex_t	*waiter;
 	pthread_mutex_t *printer;
 	int	head;
@@ -58,7 +59,6 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*status_mutex;
 	int count_eat;
-	t_condition *condition;
 	struct s_philo *next;
 }	t_philo;
 
@@ -71,8 +71,8 @@ void	*ft_calloc(size_t num, size_t size);
 
 int		validate_arg(int argc,char **argv);
 
-void	init_condition(t_condition *condition, int argc, char **argv);
-t_philo *init_philo(t_condition *condition, t_philo **philo);
+void	init_restaurant(t_restaurant *restaurant, int argc, char **argv);
+t_philo *init_philo(t_restaurant *restaurant, t_philo **philo);
 
 long long get_now(void);
 long long get_interval(t_philo *philo);
