@@ -22,17 +22,15 @@ static int eating(t_philo *philo)
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-	// pthread_mutex_lock(philo->fork_mutex);
-	// pthread_mutex_lock(philo->next->fork_mutex);
-		if (philo->head < philo->next->head)
-		{
-			pthread_mutex_lock(philo->fork_mutex);
-			pthread_mutex_lock(philo->next->fork_mutex);
-		} else
-		{
-			pthread_mutex_lock(philo->next->fork_mutex);
-			pthread_mutex_lock(philo->fork_mutex);
-		}
+	if (philo->head < philo->next->head)
+	{
+		pthread_mutex_lock(philo->fork_mutex);
+		pthread_mutex_lock(philo->next->fork_mutex);
+	} else
+	{
+		pthread_mutex_lock(philo->next->fork_mutex);
+		pthread_mutex_lock(philo->fork_mutex);
+	}
 	pthread_mutex_unlock(philo->waiter);
 	
 	
