@@ -51,7 +51,7 @@ typedef struct s_philo
 	t_restaurant *restaurant;
 	pthread_mutex_t	*waiter;
 	pthread_mutex_t *printer;
-	int	head;
+	int	index;
 	pthread_t thread;
 	int action;
 	long long last_eat;

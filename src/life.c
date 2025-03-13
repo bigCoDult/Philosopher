@@ -8,16 +8,16 @@ static void call_waiter(t_philo *philo)
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-		if (philo->head == philo->restaurant->customer_count - 1)
-		{
-			pthread_mutex_lock(philo->next->fork_mutex);
-			pthread_mutex_lock(philo->fork_mutex);
-		}
-		else
-		{
-			pthread_mutex_lock(philo->fork_mutex);
-			pthread_mutex_lock(philo->next->fork_mutex);
-		}
+	if (philo->index == philo->restaurant->customer_count - 1)
+	{
+		pthread_mutex_lock(philo->next->fork_mutex);
+		pthread_mutex_lock(philo->fork_mutex);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->fork_mutex);
+		pthread_mutex_lock(philo->next->fork_mutex);
+	}
 	pthread_mutex_unlock(philo->waiter);
 }
 
@@ -30,8 +30,8 @@ static int eating(t_philo *philo)
 	call_waiter(philo);
 
 	pthread_mutex_lock(philo->status_mutex);
-	philo->fork = philo->head;
-	philo->next->fork = philo->head;
+	philo->fork = philo->index;
+	philo->next->fork = philo->index;
 	
 	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	if (philo->restaurant->restaurant_closed)
@@ -46,8 +46,8 @@ static int eating(t_philo *philo)
 	pthread_mutex_unlock(philo->status_mutex);
 	
 	pthread_mutex_lock(philo->printer);
-		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->head);
-		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->head);
+		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
+		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	
 	pthread_mutex_lock(philo->status_mutex);
@@ -58,7 +58,7 @@ static int eating(t_philo *philo)
 	pthread_mutex_unlock(philo->status_mutex);
 	
 	pthread_mutex_lock(philo->printer);
-	printf("%lld [%d] is eating\n", philo->last_action, philo->head);
+	printf("%lld [%d] is eating\n", philo->last_action, philo->index);
 	pthread_mutex_unlock(philo->printer);
 	
 	
@@ -108,7 +108,7 @@ static int sleeping(t_philo *philo)
 	pthread_mutex_unlock(philo->status_mutex);
 	
 	pthread_mutex_lock(philo->printer);
-	printf("%lld [%d] is sleeping\n", philo->last_action, philo->head);
+	printf("%lld [%d] is sleeping\n", philo->last_action, philo->index);
 	pthread_mutex_unlock(philo->printer);
 	
 	msleep(philo->restaurant->sleeping_duration);
@@ -151,7 +151,7 @@ static int thinking(t_philo *philo)
 	philo->action = THINK;
 	philo->last_action = get_interval(philo);
 	pthread_mutex_lock(philo->printer);
-	printf("%lld [%d] is thinking\n", philo->last_action, philo->head);
+	printf("%lld [%d] is thinking\n", philo->last_action, philo->index);
 	pthread_mutex_unlock(philo->printer);
 	
 	

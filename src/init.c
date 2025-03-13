@@ -37,7 +37,7 @@ t_philo *init_philo(t_restaurant *restaurant, t_philo **philo)
 		philo[i]->printer = printer;
 		
 		
-		philo[i]->head = i;
+		philo[i]->index = i;
 		philo[i]->fork_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 		philo[i]->status_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 		pthread_mutex_init(philo[i]->fork_mutex, NULL);
