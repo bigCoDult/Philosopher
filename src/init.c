@@ -9,6 +9,8 @@ void	init_restaurant(t_restaurant *restaurant, int argc, char **argv)
 	if (argc == 6)
 		restaurant->eat_goal = ft_atoi(argv[5]);
 	restaurant->open_time = get_now();
+	restaurant->restaurant_mutex = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	pthread_mutex_init(restaurant->restaurant_mutex, NULL);
 	restaurant->restaurant_closed = 0;
 	return ;
 }

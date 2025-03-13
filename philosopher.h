@@ -35,6 +35,7 @@ typedef struct s_restaurant
 	int	eat_goal;
 	long long open_time;
 	int restaurant_closed;
+	pthread_mutex_t *restaurant_mutex;
 }	t_restaurant;
 
 typedef enum s_status

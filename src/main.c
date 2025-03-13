@@ -51,7 +51,9 @@ void *monitoring(void *arg)
 			pthread_mutex_lock(philo->printer);
 			printf("%lld [%d] is ------------------- DEAD -------------------\n", get_interval(philo), philo->head);
 			pthread_mutex_unlock(philo->printer);
+			pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 			philo->restaurant->restaurant_closed = 1;
+			pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 			pthread_mutex_unlock(philo->status_mutex);
 			return (NULL);
 		}

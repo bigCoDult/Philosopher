@@ -5,35 +5,53 @@ static int eating(t_philo *philo)
 {
 	controlled_sleep();
 	
-	pthread_mutex_lock(philo->status_mutex);
+	
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	if (philo->restaurant->restaurant_closed)
 	{
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(philo->status_mutex);
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	
 	if (philo->restaurant->customer_count == 1)
-		return (0);
+	return (0);
 	pthread_mutex_lock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->fork_mutex);
 	pthread_mutex_lock(philo->next->fork_mutex);
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-		pthread_mutex_lock(philo->fork_mutex);
-		pthread_mutex_lock(philo->next->fork_mutex);
+	// pthread_mutex_lock(philo->fork_mutex);
+	// pthread_mutex_lock(philo->next->fork_mutex);
+		if (philo->head < philo->next->head)
+		{
+			pthread_mutex_lock(philo->fork_mutex);
+			pthread_mutex_lock(philo->next->fork_mutex);
+		} else
+		{
+			pthread_mutex_lock(philo->next->fork_mutex);
+			pthread_mutex_lock(philo->fork_mutex);
+		}
 	pthread_mutex_unlock(philo->waiter);
+	
+	
+	
+	
+	pthread_mutex_lock(philo->status_mutex);
 	philo->fork = philo->head;
 	philo->next->fork = philo->head;
 	
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	if (philo->restaurant->restaurant_closed)
 	{
+		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		pthread_mutex_unlock(philo->fork_mutex);
 		pthread_mutex_unlock(philo->next->fork_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	pthread_mutex_unlock(philo->status_mutex);
 	
 	pthread_mutex_lock(philo->printer);
@@ -57,13 +75,17 @@ static int eating(t_philo *philo)
 	msleep(philo->restaurant->eating_duration);
 	
 	pthread_mutex_lock(philo->status_mutex);
+	
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	if (philo->restaurant->restaurant_closed)
 	{
+		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		pthread_mutex_unlock(philo->fork_mutex);
 		pthread_mutex_unlock(philo->next->fork_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	pthread_mutex_unlock(philo->status_mutex);
 	philo->fork = 0;
 	philo->next->fork = 0;
@@ -77,29 +99,39 @@ static int sleeping(t_philo *philo)
 	controlled_sleep();
 	
 	pthread_mutex_lock(philo->status_mutex);
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
+	
 	if (philo->restaurant->restaurant_closed)
 	{
+		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	pthread_mutex_unlock(philo->status_mutex);
 
-	pthread_mutex_lock(philo->status_mutex);
 	
+	pthread_mutex_lock(philo->status_mutex);
 	philo->action = SLEEP;
 	philo->last_action = get_interval(philo);
+	pthread_mutex_unlock(philo->status_mutex);
+	
 	pthread_mutex_lock(philo->printer);
 	printf("%lld [%d] is sleeping\n", philo->last_action, philo->head);
 	pthread_mutex_unlock(philo->printer);
 	
-	pthread_mutex_unlock(philo->status_mutex);
 	msleep(philo->restaurant->sleeping_duration);
+	
+	pthread_mutex_lock(philo->status_mutex);
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	
 	if (philo->restaurant->restaurant_closed)
 	{
+		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	pthread_mutex_unlock(philo->status_mutex);
 	return (1);
 }
@@ -109,11 +141,14 @@ static int thinking(t_philo *philo)
 	controlled_sleep();
 
 	pthread_mutex_lock(philo->status_mutex);
+	pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 	if (philo->restaurant->restaurant_closed)
 	{
+		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
 	}
+	pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 	pthread_mutex_unlock(philo->status_mutex);
 
 	pthread_mutex_lock(philo->status_mutex);
