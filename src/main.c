@@ -80,7 +80,7 @@ void clear_table(t_philo **philo)
 	free(philo[i]->printer);
 	free(philo[i]->restaurant->restaurant_mutex);
 	free(philo[i]->restaurant);
-	while (i < end)
+	while (i <= end)
 	{
 		pthread_mutex_destroy(philo[i]->fork_mutex);
 		pthread_mutex_destroy(philo[i]->status_mutex);
