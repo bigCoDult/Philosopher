@@ -104,6 +104,7 @@ static int sleeping(t_philo *philo)
 	pthread_mutex_unlock(philo->status_mutex);
 
 	
+	
 	pthread_mutex_lock(philo->status_mutex);
 	philo->action = SLEEP;
 	philo->last_action = get_interval(philo);
