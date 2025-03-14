@@ -1,6 +1,6 @@
 #include "philosopher.h"
 
-static void call_waiter(t_philo *philo)
+static void call_waiter(t_philo *philo, int customer_index)
 {
 	pthread_mutex_lock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->fork_mutex);
@@ -8,7 +8,7 @@ static void call_waiter(t_philo *philo)
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	
 	pthread_mutex_lock(philo->waiter);
-	if (philo->index == philo->restaurant->customer_index)
+	if (philo->index == customer_index)
 	{
 		pthread_mutex_lock(philo->next->fork_mutex);
 		pthread_mutex_lock(philo->fork_mutex);
@@ -29,7 +29,7 @@ static int eating(t_philo *philo)
 	if (is_closed(philo->restaurant))
 		return (0);
 
-	call_waiter(philo);
+	call_waiter(philo, philo->restaurant->customer_index);
 
 	pthread_mutex_lock(philo->status_mutex);
 	philo->fork = philo->index;
