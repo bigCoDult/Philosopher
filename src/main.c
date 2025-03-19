@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:54 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 19:49:17 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 20:42:00 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,48 +52,6 @@ void	table(t_philo *philo)
 		i++;
 	}
 	pthread_join(monitor, NULL);
-}
-
-void	*monitoring(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (1)
-	{
-		pthread_mutex_lock(philo->status_mutex);
-		if (check_dead(get_interval(philo), philo->last_eat, philo->restaurant->starve_deadline))
-		{
-			
-			pthread_mutex_lock((philo->restaurant->restaurant_mutex));
-			philo->restaurant->restaurant_closed = 1;
-			pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
-			pthread_mutex_unlock(philo->status_mutex);
-			
-			pthread_mutex_lock(philo->printer);
-			printf("%lld [%d] is ---------------------------- DEAD ---------------------------- \n", get_interval(philo), philo->index);
-			pthread_mutex_unlock(philo->printer);
-			return (NULL);
-		}
-		
-		pthread_mutex_lock((philo->restaurant->restaurant_mutex));
-		if (philo->restaurant->customer_index == philo->restaurant->full_man_index)
-		{
-			
-			philo->restaurant->restaurant_closed = 1;
-			pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
-			pthread_mutex_unlock(philo->status_mutex);
-			
-			pthread_mutex_lock(philo->printer);
-			printf("---------------------------- All philosophers are full ----------------------------\n");
-			pthread_mutex_unlock(philo->printer);
-			return (NULL);
-		}
-		pthread_mutex_unlock(philo->status_mutex);
-		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
-		philo = philo->next;
-		usleep(10);
-	}
 }
 
 void	clear_table(t_philo **philo)

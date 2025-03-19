@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:30 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 19:17:59 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 20:49:07 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void		controlled_sleep(void);
 void		clear_table(t_philo **philo);
 void		table(t_philo *philo);
 void		*life(void *arg);
+int			eating(t_philo *philo);
 void		*monitoring(void *arg);
 
 #endif
