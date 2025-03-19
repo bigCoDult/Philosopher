@@ -1,28 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/19 18:37:54 by sanbaek           #+#    #+#             */
+/*   Updated: 2025/03/19 19:03:47 by sanbaek          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosopher.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_restaurant	*restaurant;
-	t_philo		**philo;
+	t_philo			**philo;
 
 	if (!validate_arg(argc, argv))
 		return (1);
 	restaurant = (t_restaurant *)ft_calloc(1, sizeof(t_restaurant));
 	init_restaurant(restaurant, argc, argv);
-	philo = (t_philo **)ft_calloc(restaurant->customer_index + 1, sizeof(t_philo *));
+	philo = (t_philo **)ft_calloc(restaurant->customer_index + 1, \
+		sizeof(t_philo *));
 	*philo = init_philo(restaurant, philo);
 	table(*philo);
 	clear_table(philo);
 	return (0);
 }
 
-void table(t_philo *philo)
+void	table(t_philo *philo)
 {
-	t_philo *current;
+	t_philo		*current;
+	pthread_t	monitor;
+	int			i;
+
 	current = philo;
-	pthread_t monitor;
-	int i;
-	
 	pthread_create(&monitor, NULL, &monitoring, (void *)philo);
 	i = 0;
 	while (i <= philo->restaurant->customer_index)
@@ -41,17 +54,19 @@ void table(t_philo *philo)
 	pthread_join(monitor, NULL);
 }
 
-void *monitoring(void *arg)
+void	*monitoring(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
+
 	philo = (t_philo *)arg;
 	while (1)
 	{
 		pthread_mutex_lock(philo->status_mutex);
-		if (check_dead(get_interval(philo), philo->last_eat, philo->restaurant->starve_deadline))
+		if (check_dead(get_interval(philo), \
+			philo->last_eat, philo->restaurant->starve_deadline))
 		{
 			pthread_mutex_lock(philo->printer);
-			printf("%lld [%d] is ------------------- DEAD -------------------\n", get_interval(philo), philo->index);
+			printf("%lld [%d] is ---------------------------- DEAD ---------------------------- \n", get_interval(philo), philo->index);
 			pthread_mutex_unlock(philo->printer);
 			pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 			philo->restaurant->restaurant_closed = 1;
@@ -66,13 +81,13 @@ void *monitoring(void *arg)
 	}
 }
 
-void clear_table(t_philo **philo)
+void	clear_table(t_philo **philo)
 {
-	int i;
-	int end;
+	int	i;
+	int	end;
+
 	i = 0;
 	end = philo[i]->restaurant->customer_index;
-	// pthread_mutex_unlock(philo[i]->printer);
 	pthread_mutex_destroy(philo[i]->waiter);
 	pthread_mutex_destroy(philo[i]->printer);
 	pthread_mutex_destroy(philo[i]->restaurant->restaurant_mutex);
@@ -90,17 +105,4 @@ void clear_table(t_philo **philo)
 		i++;
 	}
 	free(philo);
-}
-
-
-int is_closed(t_restaurant *restaurant)
-{
-	pthread_mutex_lock(restaurant->restaurant_mutex);
-	if (restaurant->restaurant_closed)
-	{
-		pthread_mutex_unlock(restaurant->restaurant_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(restaurant->restaurant_mutex);
-	return (0);
 }
