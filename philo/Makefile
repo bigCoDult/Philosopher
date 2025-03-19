@@ -1,5 +1,5 @@
 # Important
-NAME = philosopher
+NAME = philo
 CC = cc
 RM = rm -rf
 
