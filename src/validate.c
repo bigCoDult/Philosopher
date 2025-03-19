@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:58 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 18:56:51 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 20:15:03 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	cmp_atoitoa(char *origin)
 	char	*str;
 
 	n = ft_atoi(origin);
-	if (n < 0)
+	if (n <= 0)
 		return (-1);
 	str = ft_itoa(n);
 	if (ft_strcmp(str, origin) == 0)
@@ -43,17 +43,17 @@ int	validate_arg(int argc, char **argv)
 	if ((cmp_atoitoa(argv[1]) != 0) || (cmp_atoitoa(argv[2]) != 0) \
 		|| (cmp_atoitoa(argv[3]) != 0) || (cmp_atoitoa(argv[4]) != 0))
 	{
-		printf("Error1: improper argv\n");
+		printf("Error: improper argv\n");
 		return (0);
 	}
 	if (argc == 6 && cmp_atoitoa(argv[5]) != 0)
 	{
-		printf("Error2: improper argv\n");
+		printf("Error: improper argv\n");
 		return (0);
 	}
 	if (ft_atoi(argv[1]) > 300)
 	{
-		printf("Error3: Too many philosophers\n");
+		printf("Error: Too many philosophers\n");
 		return (0);
 	}
 	return (1);
