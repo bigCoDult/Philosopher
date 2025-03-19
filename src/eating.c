@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:49:44 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 20:49:45 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 21:16:31 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	print_eating(t_philo *philo)
 	pthread_mutex_lock(philo->printer);
 	if (is_closed(philo->restaurant, philo->printer, philo->status_mutex, NULL))
 		return (0);
-	printf("%lld [%d] is eating\n", philo->last_eat, philo->index);
+	printf("%lld %d is eating\n", philo->last_eat, philo->index);
 	pthread_mutex_unlock(philo->printer);
 	pthread_mutex_unlock(philo->status_mutex);
 	return (1);
@@ -63,8 +63,8 @@ int	eating(t_philo *philo)
 	if (is_closed(philo->restaurant, philo->fork_mutex, \
 		philo->next->fork_mutex, philo->printer))
 		return (0);
-	printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
-	printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
+	printf("%lld %d has taken a fork\n", get_interval(philo), philo->index);
+	printf("%lld %d has taken a fork\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	if (print_eating(philo) == 0)
 		return (0);

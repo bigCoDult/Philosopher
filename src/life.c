@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:56 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 20:49:23 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 21:16:16 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	sleeping(t_philo *philo)
 	pthread_mutex_lock(philo->printer);
 	if (is_closed(philo->restaurant, philo->printer, NULL, NULL))
 		return (0);
-	printf("%lld [%d] is sleeping\n", get_interval(philo), philo->index);
+	printf("%lld %d is sleeping\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	msleep(philo->restaurant->sleeping_duration);
 	if (is_closed(philo->restaurant, NULL, NULL, NULL))
@@ -57,7 +57,7 @@ static int	thinking(t_philo *philo)
 	pthread_mutex_lock(philo->printer);
 	if (is_closed(philo->restaurant, philo->printer, NULL, NULL))
 		return (0);
-	printf("%lld [%d] is thinking\n", get_interval(philo), philo->index);
+	printf("%lld %d is thinking\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	return (1);
 }
