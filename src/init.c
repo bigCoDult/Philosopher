@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:45:05 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 18:52:25 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 19:17:45 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ void	init_restaurant(t_restaurant *restaurant, int argc, char **argv)
 	restaurant->eating_duration = ft_atoi(argv[3]);
 	restaurant->sleeping_duration = ft_atoi(argv[4]);
 	if (argc == 6)
-		restaurant->eat_goal = ft_atoi(argv[5]);
+		restaurant->full_goal = ft_atoi(argv[5]);
 	restaurant->open_time = get_now();
 	restaurant->restaurant_mutex = \
 		(pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 	pthread_mutex_init(restaurant->restaurant_mutex, NULL);
 	restaurant->restaurant_closed = 0;
+	restaurant->full_man_index = -1;
 	return ;
 }
 

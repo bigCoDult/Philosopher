@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:56 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 18:55:39 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 19:32:40 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,64 @@ static void	call_waiter(t_philo *philo, int customer_index)
 	pthread_mutex_unlock(philo->waiter);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 static int	eating(t_philo *philo)
 {
 	controlled_sleep();
 	if (is_closed(philo->restaurant, NULL, NULL, NULL))
 		return (0);
 	call_waiter(philo, philo->restaurant->customer_index);
+
 	philo->fork = philo->index;
 	philo->next->fork = philo->index;
+
+
+
+
+
+	
 	pthread_mutex_lock(philo->printer);
-	if (is_closed(philo->restaurant, philo->fork_mutex, philo->next->fork_mutex, philo->printer))
-		return (0);
-	printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
-	printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
+		if (is_closed(philo->restaurant, philo->fork_mutex, philo->next->fork_mutex, philo->printer))
+			return (0);
+		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
+		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
-	pthread_mutex_lock(philo->status_mutex);
-	pthread_mutex_lock(philo->printer);
+	
 	philo->action = EAT;
-	philo->last_action = get_interval(philo);
-	philo->last_eat = philo->last_action;
-	philo->count_eat++;
-	printf("%lld [%d] is eating\n", philo->last_action, philo->index);
-	pthread_mutex_unlock(philo->printer);
+	pthread_mutex_lock(philo->status_mutex);
+		philo->last_eat = get_interval(philo);
+		philo->count_eat++;
+		
+		
+		pthread_mutex_lock(philo->restaurant->restaurant_mutex);
+			if (philo->count_eat == philo->restaurant->full_goal)
+				philo->restaurant->full_man_index++;
+		pthread_mutex_unlock(philo->restaurant->restaurant_mutex);
+		
+		pthread_mutex_lock(philo->printer);
+			if (is_closed(philo->restaurant, philo->printer, philo->status_mutex, NULL))
+				return (0);
+			printf("%lld [%d] is eating\n", philo->last_eat, philo->index);
+		pthread_mutex_unlock(philo->printer);
 	pthread_mutex_unlock(philo->status_mutex);
 	msleep(philo->restaurant->eating_duration);
-	if (is_closed(philo->restaurant, NULL, NULL, NULL))
+	if (is_closed(philo->restaurant, philo->fork_mutex, philo->next->fork_mutex, NULL))
 		return (0);
 	philo->fork = 0;
 	philo->next->fork = 0;

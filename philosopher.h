@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:30 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 18:44:46 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/19 19:17:59 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_restaurant
 	int				starve_deadline;
 	int				eating_duration;
 	int				sleeping_duration;
-	int				eat_goal;
+	int				full_goal;
+	int				full_man_index;
 	long long		open_time;
 	int				restaurant_closed;
 	pthread_mutex_t	*restaurant_mutex;
