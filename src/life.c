@@ -52,16 +52,16 @@ static int eating(t_philo *philo)
 		printf("%lld [%d] has taken a fork\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	
+	
 	pthread_mutex_lock(philo->status_mutex);
+	pthread_mutex_lock(philo->printer);
 	philo->action = EAT;
 	philo->last_action = get_interval(philo);
 	philo->last_eat = philo->last_action;
 	philo->count_eat++;
-	pthread_mutex_unlock(philo->status_mutex);
-	
-	pthread_mutex_lock(philo->printer);
 	printf("%lld [%d] is eating\n", philo->last_action, philo->index);
 	pthread_mutex_unlock(philo->printer);
+	pthread_mutex_unlock(philo->status_mutex);
 	
 	
 	
