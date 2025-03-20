@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:56 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 21:16:16 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/20 22:46:14 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,19 @@ static int	thinking(t_philo *philo)
 
 void	*life(void *arg)
 {
-	t_philo	*philo_himself;
+	t_philo	*philo;
 
-	philo_himself = (t_philo *)arg;
+	philo = (t_philo *)arg;
+	
+	if (philo->restaurant->customer_index == 0)
+		return (0);
 	while (1)
 	{
-		if (!thinking(philo_himself))
+		if (!thinking(philo))
 			return (NULL);
-		if (!eating(philo_himself))
+		if (!eating(philo))
 			return (NULL);
-		if (!sleeping(philo_himself))
+		if (!sleeping(philo))
 			return (NULL);
 	}
 	return (NULL);
