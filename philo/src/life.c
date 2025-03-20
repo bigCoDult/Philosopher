@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:56 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/20 22:46:14 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/20 22:48:36 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	*life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	
 	if (philo->restaurant->customer_index == 0)
 		return (0);
 	while (1)
