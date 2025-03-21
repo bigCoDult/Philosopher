@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:00 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 16:29:43 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:49:00 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ void	msleep(long long time, t_philo *philo)
 	int	i;
 
 	i = 0;
-	while (i < time)
+	while (i < (time / 100))
 	{
 		if (is_onedead(philo) || is_allfull(philo))
 			return ;
-		usleep(1000);
+		usleep(100000);
 		i++;
 	}
 }
 
 void	controlled_sleep(void)
 {
-	usleep(700);
+	usleep(300);
 }
