@@ -46,7 +46,7 @@ int	print_eating(t_philo *philo)
 	return (1);
 }
 
-static void done_eating(t_philo *philo)
+static void	done_eating(t_philo *philo)
 {
 	philo->fork = 0;
 	philo->next->fork = 0;
@@ -55,7 +55,6 @@ static void done_eating(t_philo *philo)
 		philo->restaurant->full_man_index++;
 	pthread_mutex_unlock(philo->restaurant->restaurant_mutex);
 }
-
 
 int	eating(t_philo *philo)
 {
