@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:00 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 17:28:23 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:46:00 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,24 @@ int	check_dead(long long now, long long last_eat, long long deadline)
 	return (0);
 }
 
+
 void	msleep(long long time, t_philo *philo)
 {
-	int	i;
+	long long start;
+	long long end;
 
-	i = 0;
-	while (i < (time / 100))
+	start = get_now();
+	end = start;
+	while (end - start < time)
 	{
+		end = get_now();
 		if (is_onedead(philo) || is_allfull(philo))
 			return ;
-		usleep(100000);
-		i++;
+		controlled_sleep();
 	}
 }
 
 void	controlled_sleep(void)
 {
-	usleep(300);
+	usleep(50);
 }

@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:43:45 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 16:32:26 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 19:56:01 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ void	*monitoring(void *arg)
 		if (is_allfull(philo))
 			return (NULL);
 		philo = philo->next;
-		usleep(10);
+		controlled_sleep();
 	}
 }
