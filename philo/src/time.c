@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:00 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 21:46:00 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 22:37:20 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ int	check_dead(long long now, long long last_eat, long long deadline)
 	return (0);
 }
 
-
 void	msleep(long long time, t_philo *philo)
 {
-	long long start;
-	long long end;
+	long long	start;
+	long long	end;
 
 	start = get_now();
 	end = start;
