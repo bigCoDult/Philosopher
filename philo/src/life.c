@@ -41,16 +41,12 @@ static int	sleeping(t_philo *philo)
 	printf("%lld %d is sleeping\n", get_interval(philo), philo->index);
 	pthread_mutex_unlock(philo->printer);
 	msleep(philo->restaurant->sleeping_duration);
-	if (is_closed(philo->restaurant, NULL, NULL, NULL))
-		return (0);
 	return (1);
 }
 
 static int	thinking(t_philo *philo)
 {
 	controlled_sleep();
-	if (is_closed(philo->restaurant, NULL, NULL, NULL))
-		return (0);
 	if (philo->action == THINK)
 		return (1);
 	philo->action = THINK;
