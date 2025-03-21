@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:43:45 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 16:24:18 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:28:48 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ int	is_allfull(t_philo *philo)
 
 int	is_onedead(t_philo *philo)
 {
+	pthread_mutex_lock((philo->status_mutex));
 	if (check_dead(get_interval(philo), \
 		philo->last_eat, philo->restaurant->starve_deadline))
 	{
+		pthread_mutex_unlock((philo->status_mutex));
 		pthread_mutex_lock((philo->restaurant->restaurant_mutex));
 		philo->restaurant->restaurant_closed = 1;
 		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
@@ -42,7 +44,10 @@ int	is_onedead(t_philo *philo)
 		return (1);
 	}
 	else
+	{
+		pthread_mutex_unlock((philo->status_mutex));
 		return (0);
+	}
 }
 
 void	*monitoring(void *arg)
