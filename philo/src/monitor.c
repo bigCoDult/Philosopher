@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:43:45 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/19 21:15:41 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:00:16 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	is_onedead(t_philo *philo)
 		pthread_mutex_unlock((philo->restaurant->restaurant_mutex));
 		pthread_mutex_unlock(philo->status_mutex);
 		pthread_mutex_lock(philo->printer);
-		printf("%lld %d is DEAD\n", get_interval(philo), philo->index);
+		printf("%lld %d died\n", get_interval(philo), philo->index + 1);
 		pthread_mutex_unlock(philo->printer);
 		return (1);
 	}
