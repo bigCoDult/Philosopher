@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:37:56 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 15:59:42 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:13:53 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	sleeping(t_philo *philo)
 		return (0);
 	printf("%lld %d is sleeping\n", get_interval(philo), philo->index + 1);
 	pthread_mutex_unlock(philo->printer);
-	msleep(philo->restaurant->sleeping_duration);
+	msleep(philo->restaurant->sleeping_duration, philo);
 	return (1);
 }
 

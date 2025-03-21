@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:38:30 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/20 22:46:26 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:17:27 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,14 @@ long long	get_interval(t_philo *philo);
 int			check_dead(long long now, long long last_eat, long long deadline);
 int			is_closed(t_restaurant *restaurant, pthread_mutex_t	\
 	*one, pthread_mutex_t *two, pthread_mutex_t *three);
-void		msleep(long long time);
+void		msleep(long long time, t_philo *philo);
 void		controlled_sleep(void);
 void		clear_table(t_philo **philo);
 void		table(t_philo *philo);
 void		*life(void *arg);
 int			eating(t_philo *philo);
 void		*monitoring(void *arg);
+int			is_onedead(t_philo *philo);
+int			is_allfull(t_philo *philo);
 
 #endif

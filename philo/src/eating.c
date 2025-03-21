@@ -6,7 +6,7 @@
 /*   By: sanbaek <sanbaek@student.42gyeongsan.kr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:49:44 by sanbaek           #+#    #+#             */
-/*   Updated: 2025/03/21 16:00:08 by sanbaek          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:24:51 by sanbaek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	print_eating(t_philo *philo)
 	philo->last_eat = get_interval(philo);
 	philo->count_eat++;
 	pthread_mutex_lock(philo->printer);
-	if (is_closed(philo->restaurant, philo->fork_mutex, philo->next->fork_mutex, philo->printer))
+	if (is_closed(philo->restaurant, philo->fork_mutex, \
+		philo->next->fork_mutex, philo->printer))
 	{
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
@@ -77,7 +78,7 @@ int	eating(t_philo *philo)
 	pthread_mutex_unlock(philo->printer);
 	if (print_eating(philo) == 0)
 		return (0);
-	msleep(philo->restaurant->eating_duration);
+	msleep(philo->restaurant->eating_duration, philo);
 	done_eating(philo);
 	pthread_mutex_unlock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->next->fork_mutex);
