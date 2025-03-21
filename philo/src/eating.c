@@ -37,10 +37,6 @@ int	print_eating(t_philo *philo)
 	pthread_mutex_lock(philo->status_mutex);
 	philo->last_eat = get_interval(philo);
 	philo->count_eat++;
-	pthread_mutex_lock(philo->restaurant->restaurant_mutex);
-	if (philo->count_eat == philo->restaurant->full_goal)
-		philo->restaurant->full_man_index++;
-	pthread_mutex_unlock(philo->restaurant->restaurant_mutex);
 	pthread_mutex_lock(philo->printer);
 	if (is_closed(philo->restaurant, philo->printer, philo->status_mutex, NULL))
 		return (0);
@@ -49,6 +45,17 @@ int	print_eating(t_philo *philo)
 	pthread_mutex_unlock(philo->status_mutex);
 	return (1);
 }
+
+static void done_eating(t_philo *philo)
+{
+	philo->fork = 0;
+	philo->next->fork = 0;
+	pthread_mutex_lock(philo->restaurant->restaurant_mutex);
+	if (philo->count_eat == philo->restaurant->full_goal)
+		philo->restaurant->full_man_index++;
+	pthread_mutex_unlock(philo->restaurant->restaurant_mutex);
+}
+
 
 int	eating(t_philo *philo)
 {
@@ -72,8 +79,7 @@ int	eating(t_philo *philo)
 	if (is_closed(philo->restaurant, \
 		philo->fork_mutex, philo->next->fork_mutex, NULL))
 		return (0);
-	philo->fork = 0;
-	philo->next->fork = 0;
+	done_eating(philo);
 	pthread_mutex_unlock(philo->fork_mutex);
 	pthread_mutex_unlock(philo->next->fork_mutex);
 	return (1);
