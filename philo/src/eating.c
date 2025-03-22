@@ -44,7 +44,7 @@ int	print_eating(t_philo *philo)
 		pthread_mutex_unlock(philo->status_mutex);
 		return (0);
 	}
-	printf("%lld %d is eating\n", philo->last_eat, philo->index + 1);
+	printf("%lld %d is eating\n", get_interval(philo), philo->index + 1);
 	pthread_mutex_unlock(philo->printer);
 	pthread_mutex_unlock(philo->status_mutex);
 	return (1);
