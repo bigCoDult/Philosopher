@@ -8,7 +8,15 @@ SRC_DIR = ./src
 OBJ_DIR = ./obj
 INC = -I.
 
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC = $(SRC_DIR)/main.c \
+	$(SRC_DIR)/eating.c \
+	$(SRC_DIR)/ft_for_atoitoa.c \
+	$(SRC_DIR)/ft_utils.c \
+	$(SRC_DIR)/init.c \
+	$(SRC_DIR)/life.c \
+	$(SRC_DIR)/monitor.c \
+	$(SRC_DIR)/time.c \
+	$(SRC_DIR)/validate.c
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(OBJ_DIR) $(NAME)
